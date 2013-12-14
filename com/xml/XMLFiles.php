@@ -16,13 +16,21 @@
 
 header('Content-type: text/xml');
 
+//multiexplode retrieved from php.net/explode from php@metehanarslan.com
+function multiexplode ($delimiters,$string) {
+
+    $ready = str_replace($delimiters, $delimiters[0], $string);
+    $launch = explode($delimiters[0], $ready);
+    return  $launch;
+}
+
 function returnimages($dirname) {
   $files = array();  
   if (strpos($dirname, '..') === false) {
     $pattern = "(\.jpg$)|(\.png$)|(\.jpeg$)|(\.gif$)";
       foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator(realpath("../../" . $dirname))) as $filepath) {
         if (eregi($pattern, $filepath)) {
-          $file =  explode("/", $filepath);
+          $file =  multiexplode(array('\\','/'), $filepath);
           array_push($files, "<file>" . $file[count($file)-1] . "</file>");
       }
     }
